@@ -1,4 +1,5 @@
 model_name: microsoft/deberta-v3-base
+tokenizer_use_fast: false
 output_dir: runs/deberta-v3-multitask
 
 training:

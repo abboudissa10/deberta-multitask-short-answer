@@ -23,7 +23,10 @@ def main() -> None:
 
     set_seed(training_config["seed"])
 
-    tokenizer = AutoTokenizer.from_pretrained(config["model_name"])
+    tokenizer = AutoTokenizer.from_pretrained(
+        config["model_name"],
+        use_fast=config.get("tokenizer_use_fast", False),
+    )
     dataset = load_jsonl_dataset(
         DataConfig(
             train_file=data_config["train_file"],
@@ -71,4 +74,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
