@@ -18,7 +18,6 @@ training:
   greater_is_better: false
 
 data:
-  num_classes: 5
+  num_classes: 4
   train_file: data/train.jsonl
   validation_file: data/validation.jsonl
-
