@@ -1,0 +1,21 @@
+{
+  "source_csv": "C:\\Users\\user\\Downloads\\asap_sas_reference_augmented_full.csv",
+  "rows": 17207,
+  "train_rows": 14624,
+  "validation_rows": 2583,
+  "validation_ratio": 0.15,
+  "seed": 42,
+  "num_classes": 4,
+  "score_max_by_essay_set": {
+    "1": 3,
+    "2": 3,
+    "3": 2,
+    "4": 2,
+    "5": 3,
+    "6": 3,
+    "7": 2,
+    "8": 2,
+    "9": 2,
+    "10": 2
+  }
+}
