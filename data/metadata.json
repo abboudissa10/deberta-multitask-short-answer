@@ -1,8 +1,8 @@
 {
   "source_csv": "C:\\Users\\user\\Downloads\\asap_sas_reference_augmented_full.csv",
-  "rows": 17207,
-  "train_rows": 14624,
-  "validation_rows": 2583,
+  "rows": 17189,
+  "train_rows": 14609,
+  "validation_rows": 2580,
   "validation_ratio": 0.15,
   "seed": 42,
   "num_classes": 4,
