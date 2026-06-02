@@ -32,11 +32,13 @@ def summarize(path: Path) -> None:
     rows = read_jsonl(path)
     labels = Counter(int(row["cls_label"]) for row in rows)
     prompts = Counter(int(row.get("essay_set", -1)) for row in rows)
+    strata = Counter(row.get("stratify_label", "missing") for row in rows)
     reg_values = [float(row["reg_label"]) for row in rows]
 
     print(f"\n{path}: {len(rows):,} rows")
     print("Class labels:", dict(sorted(labels.items())))
     print("Essay sets:", dict(sorted(prompts.items())))
+    print(f"Stratification groups: {len(strata)}")
     print(f"reg_label min={min(reg_values):.4f} max={max(reg_values):.4f}")
     if min(reg_values) < 0 or max(reg_values) > 1:
         raise ValueError(f"{path} has reg_label values outside [0, 1]")

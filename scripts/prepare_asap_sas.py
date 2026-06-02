@@ -17,6 +17,16 @@ REQUIRED_COLUMNS = {
     "score",
 }
 
+EXCEL_ERROR_VALUES = {
+    "#DIV/0!",
+    "#N/A",
+    "#NAME?",
+    "#NULL!",
+    "#NUM!",
+    "#REF!",
+    "#VALUE!",
+}
+
 
 def normalize_answer(text: str) -> str:
     text = text.strip().lower()
@@ -37,6 +47,8 @@ def read_rows(csv_path: Path) -> list[dict]:
         reference_answer = row["reference_answer"].strip()
         student_answer = row["student_answer"].strip()
         if not question or not reference_answer or not student_answer:
+            continue
+        if student_answer.upper() in EXCEL_ERROR_VALUES:
             continue
 
         essay_set = int(row["essay_set"])
@@ -69,6 +81,7 @@ def add_labels(rows: list[dict]) -> list[dict]:
         item["cls_label"] = row["score"]
         item["reg_label"] = row["score"] / max_score
         item["max_score"] = max_score
+        item["stratify_label"] = f"essay_set_{row['essay_set']}_score_{row['score']}"
         labeled.append(item)
     return labeled
 
@@ -79,15 +92,15 @@ def split_grouped(
     seed: int,
 ) -> tuple[list[dict], list[dict]]:
     rng = random.Random(seed)
-    groups_by_prompt = defaultdict(dict)
+    groups_by_stratum = defaultdict(dict)
 
     for row in rows:
         key = normalize_answer(row["student_answer"])
-        groups_by_prompt[row["essay_set"]].setdefault(key, []).append(row)
+        groups_by_stratum[row["stratify_label"]].setdefault(key, []).append(row)
 
     train = []
     validation = []
-    for groups in groups_by_prompt.values():
+    for groups in groups_by_stratum.values():
         group_items = list(groups.values())
         rng.shuffle(group_items)
         target_validation_size = round(sum(len(group) for group in group_items) * validation_ratio)
@@ -123,6 +136,7 @@ def write_jsonl(rows: list[dict], output_path: Path) -> None:
         "max_score",
         "cls_label",
         "reg_label",
+        "stratify_label",
     ]
     with output_path.open("w", encoding="utf-8") as handle:
         for row in rows:

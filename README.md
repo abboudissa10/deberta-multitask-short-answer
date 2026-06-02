@@ -82,6 +82,9 @@ The script makes the labels expected by the model:
 
 - `cls_label`: the original integer ASAP score
 - `reg_label`: the score normalized per `essay_set`
+- `stratify_label`: a split helper made from `essay_set` and `score`
+
+It also removes exact Excel error answers such as `#NAME?`, because those are spreadsheet artifacts rather than meaningful student responses.
 
 For example, a score of `1` becomes:
 
